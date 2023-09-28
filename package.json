@@ -8,7 +8,10 @@
     "express-validator": "^7.0.1",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.6.1",
-    "nodemon": "^3.0.1"
+    "nodemailer": "^6.9.5",
+    "nodemon": "^3.0.1",
+    "pdfkit": "^0.13.0",
+    "puppeteer": "^21.3.5"
   },
   "name": "document-tracing",
   "version": "1.0.0",

@@ -13,9 +13,8 @@ router.post(
   "/create-appointment",
   upload.single("government_id"),
   [
-    check("user_id").isInt(),
-
-    check("purpose_id").isInt(),
+    check("user_id").toInt().isInt(),
+    check("purpose_id").toInt().isInt(),
     check("outlet").notEmpty(),
     check("appointmentDate").isISO8601(),
     check("appointmentStatus")
@@ -25,19 +24,19 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log(errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
-
     const appointment = {
       user_id: req.body.user_id,
       government_id: req.file.filename,
       purpose_id: req.body.purpose_id,
       createdAt: new Date(), // You can set this to the current timestamp
       outlet: req.body.outlet,
-      appointmentDate: req.body.appointmentDate,
-      appointmentStatus: req.body.appointmentStatus || "Scheduled",
+      appointmentDate: req.body.appointmentDate.slice(0, 19).replace("T", " "),
+      appointmentStatus: req.body.appointmentStatus || "pending",
     };
-
+    console.log(appointment);
     try {
       const success = await createAppointment(appointment);
 

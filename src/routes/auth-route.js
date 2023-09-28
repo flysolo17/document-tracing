@@ -22,6 +22,7 @@ router.post("/login", async (req, res) => {
     res.status(404).json({ message: "User not found!" });
   }
 });
+
 router.post("/register", async (req, res) => {
   const {
     fullname,
@@ -31,7 +32,7 @@ router.post("/register", async (req, res) => {
     age,
     status,
     phone,
-    type,
+
     email,
     password,
   } = req.body;
@@ -44,7 +45,7 @@ router.post("/register", async (req, res) => {
       age,
       status,
       phone,
-      type,
+      type: "user",
       email,
       password,
     };
