@@ -60,42 +60,42 @@ router.get("/", async (req, res) => {
   try {
     const appointments = await getAllAppointments();
 
-    // Modify the "appointmentDate" field to include both date and time
-    const formattedAppointments = appointments.map((appointment) => {
-      // Assuming "appointmentDate" is a valid ISO date string (e.g., "2023-10-10T14:30:00.000Z")
-      const appointmentDate = new Date(
-        appointment.appointmentDate
-      ).toLocaleString();
-
-      return {
-        ...appointment,
-        appointmentDate, // Replace the existing "appointmentDate" field
-      };
-    });
-
-    return res.status(200).json(formattedAppointments);
+    return res.status(200).json(appointments);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 });
 
-router.put("/update-status", async (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  try {
-    const success = await updateAppointmentStatusById(id, status);
-    if (success) {
-      return res
-        .status(200)
-        .json({ message: "Appointment status updated successfully" });
-    } else {
-      return res.status(404).json({ message: "Appointment not found" });
+router.patch(
+  "/update-status",
+  [
+    check("id").toInt().isInt(),
+    check("appointmentStatus").isIn([
+      "pending",
+      "schedulled",
+      "cancelled",
+      "complete",
+    ]),
+  ],
+  async (req, res) => {
+    const id = Number(req.query.id);
+    const { appointmentStatus } = req.body;
+
+    try {
+      const success = await updateAppointmentStatusById(id, appointmentStatus);
+      if (success) {
+        return res
+          .status(200)
+          .json({ message: "Appointment status updated successfully" });
+      } else {
+        return res.status(404).json({ message: "Appointment not found" });
+      }
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Internal server error" });
     }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal server error" });
   }
-});
+);
 
 module.exports = router;

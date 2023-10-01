@@ -5,7 +5,7 @@ const connection = require("../config/connection");
 async function runSchema() {
   try {
     const schemaSQL = fs.readFileSync("schema.sql", "utf-8");
-    await connection(schemaSQL); // Use connection.query to execute the SQL
+    await connection(schemaSQL);
     console.log("Schema executed successfully.");
   } catch (error) {
     console.error("Error running schema:", error);
@@ -32,12 +32,14 @@ const queries = {
     `,
     GET_ALL_APPOINTMENTS: `
     SELECT 
+      appointments.id,
       users.fullname,
       appointments.outlet,
       DATE_FORMAT(appointments.appointmentDate, '%Y-%m-%d') AS date,
       DATE_FORMAT(appointments.appointmentDate, '%H:%i') AS time,
       appointments.government_id,
-      purposes.purpose_name AS 'appointmentStatus purpose'
+      purposes.purpose_name AS 'purpose',
+      appointments.appointmentStatus
     FROM appointments
     JOIN users ON appointments.user_id = users.id
     JOIN purposes ON appointments.purpose_id = purposes.purpose_id

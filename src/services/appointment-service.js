@@ -31,14 +31,14 @@ async function getAllAppointments() {
 }
 
 async function updateAppointmentStatusById(id, status) {
-  const connection = await pool.getConnection();
   try {
     await connection(queries.APPOINTMENT_QUERIES.UPDATE_APPOINTMENT_STATUS, [
-      id,
       status,
+      id,
     ]);
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 }
