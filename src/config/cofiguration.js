@@ -43,11 +43,11 @@ const queries = {
     FROM appointments
     JOIN users ON appointments.user_id = users.id
     JOIN purposes ON appointments.purpose_id = purposes.purpose_id
-    ORDER BY appointments.appointmentDate DESC
+    ORDER BY appointments.appointmentDate ASC
     `,
     GET_APPOINTMENT_BY_ID: `SELECT * FROM appointments WHERE id = ?`,
     DELETE_APPOINTMENT_BY_ID: `DELETE FROM appointments WHERE id = ?`,
-    UPDATE_APPOINTMENT_STATUS: `UPDATE appointments SET appointmentStatus = ? WHERE id = ?`,
+    UPDATE_APPOINTMENT_STATUS: `UPDATE appointments SET appointmentStatus = ? , updatedAt = NOW() WHERE id = ?`,
   },
 };
 

@@ -8,6 +8,7 @@ const {
   getAllAppointments,
   createAppointment,
 } = require("../services/appointment-service");
+const { sendEmail } = require("../services/email-service");
 
 router.post(
   "/create-appointment",
@@ -31,7 +32,7 @@ router.post(
       user_id: req.body.user_id,
       government_id: req.file.filename,
       purpose_id: req.body.purpose_id,
-      createdAt: new Date(), // You can set this to the current timestamp
+      createdAt: new Date(),
       outlet: req.body.outlet,
       appointmentDate: req.body.appointmentDate.slice(0, 19).replace("T", " "),
       appointmentStatus: req.body.appointmentStatus || "pending",
@@ -78,9 +79,10 @@ router.patch(
       "complete",
     ]),
   ],
+  sendEmail,
   async (req, res) => {
     const id = Number(req.query.id);
-    const { appointmentStatus } = req.body;
+    const { appointmentStatus, email } = req.body;
 
     try {
       const success = await updateAppointmentStatusById(id, appointmentStatus);

@@ -22,40 +22,38 @@ const PORT = 3000;
  */
 const authRoute = require("./routes/auth-route");
 const appointmentsRoute = require("./routes/appointment-route");
+const transporter = require("./services/email-service");
 
 app.use("/auth", authRoute);
 app.use("/appointments", appointmentsRoute);
 const imagePath = "1695604696016_logo.png";
-app.get("/pdf", async (req, res) => {
-  // Usage example:
-  const htmlContent = `
-<h1>Hello, PDF!</h1>
-<p>This is a sample PDF generated with Puppeteer.</p>
-`;
-
-  const cssStyles = `
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-}
-h1 {
-  color: #333;
-}
-p {
-  color: #666;
-}
-`;
-
-  const outputPath = "public/files/output.pdf";
-
-  generatePDF(htmlContent, cssStyles, outputPath)
-    .then(() => {
-      res.send("Success");
-    })
-    .catch((error) => {
-      res.send(error);
-    });
+app.post("/test", async (req, res) => {
+  //   // Usage example:
+  //   const htmlContent = `
+  // <h1>Hello, PDF!</h1>
+  // <p>This is a sample PDF generated with Puppeteer.</p>
+  // `;
+  //   const cssStyles = `
+  // body {
+  //   font-family: Arial, sans-serif;
+  //   margin: 0;
+  //   padding: 20px;
+  // }
+  // h1 {
+  //   color: #333;
+  // }
+  // p {
+  //   color: #666;
+  // }
+  // `;
+  //   const outputPath = "public/files/output.pdf";
+  //   generatePDF(htmlContent, cssStyles, outputPath)
+  //     .then(() => {
+  //       res.send("Success");
+  //     })
+  //     .catch((error) => {
+  //       res.send(error);
+  //     });
 });
 
 app.listen(PORT, () => {
